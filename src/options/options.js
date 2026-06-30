@@ -40,14 +40,14 @@ const OptionsPage = {
     e.preventDefault();
     const settings = this.getSettingsFromForm();
     await StorageService.setSettings(settings);
-    this.showStatus('✓ Settings saved');
+    this.showStatus(' Settings saved');
   },
 
   async handleReset() {
     if (confirm('Are you sure you want to reset all settings?')) {
       await StorageService.resetSettings();
       this.renderSettings(defaultSettings());
-      this.showStatus('✓ Reset to defaults');
+      this.showStatus(' Reset to defaults');
     }
   },
 

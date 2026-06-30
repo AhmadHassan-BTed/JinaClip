@@ -15,13 +15,13 @@ const ASSETS = [
 ];
 
 async function build() {
-  console.log('🚀 Starting professional build...');
+  console.log(' [START]  Starting professional build...');
 
   try {
     // 1. Clean previous build
     if (fs.existsSync(DIST)) {
       await fs.remove(DIST);
-      console.log('🧹 Cleaned existing dist/ folder.');
+      console.log(' Cleaned existing dist/ folder.');
     }
 
     // 2. Create dist folder
@@ -36,11 +36,11 @@ async function build() {
         await fs.copy(srcPath, destPath);
         console.log(`✅ Copied ${asset} to dist/`);
       } else {
-        console.warn(`⚠️ Warning: ${asset} not found, skipping.`);
+        console.warn(` [WARNING]  Warning: ${asset} not found, skipping.`);
       }
     }
 
-    console.log('\n✨ Build complete! Point Chrome to the "dist" folder.');
+    console.log('\n [SUCCESS]  Build complete! Point Chrome to the "dist" folder.');
   } catch (err) {
     console.error('❌ Build failed:', err);
     process.exit(1);

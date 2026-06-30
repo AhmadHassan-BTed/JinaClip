@@ -30,22 +30,22 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
   // ── Core formats ────────────────────────────────────────────────────────
   {
     id: 'jina_markdown',
-    title: '📄  Copy as Markdown',
+    title: '  Copy as Markdown',
     config: { respondWith: 'markdown' },
   },
   {
     id: 'jina_text',
-    title: '📝  Copy as Plain Text',
+    title: ' [NOTE]   Copy as Plain Text',
     config: { respondWith: 'text' },
   },
   {
     id: 'jina_html',
-    title: '🌐  Copy as Cleaned HTML',
+    title: '  Copy as Cleaned HTML',
     config: { respondWith: 'html' },
   },
   {
     id: 'jina_json',
-    title: '🔧  Copy as JSON (Full Payload)',
+    title: '  Copy as JSON (Full Payload)',
     config: { respondWith: 'json' },
   },
   { id: 'sep_1', separator: true },
@@ -53,17 +53,17 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
   // ── Image options ────────────────────────────────────────────────────────
   {
     id: 'jina_with_captions',
-    title: '🖼️  Copy with Image Captions',
+    title: '  Copy with Image Captions',
     config: { respondWith: 'markdown', withGeneratedAlt: true, retainImages: 'all' },
   },
   {
     id: 'jina_no_images',
-    title: '🚫  Copy without Images',
+    title: '  Copy without Images',
     config: { respondWith: 'markdown', retainImages: 'none' },
   },
   {
     id: 'jina_images_summary',
-    title: '📋  Copy with Images Summary',
+    title: '  Copy with Images Summary',
     config: { respondWith: 'markdown', withImagesSummary: true, withGeneratedAlt: true },
   },
   { id: 'sep_2', separator: true },
@@ -71,12 +71,12 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
   // ── Link options ─────────────────────────────────────────────────────────
   {
     id: 'jina_links_summary',
-    title: '🔗  Copy with Links Summary',
+    title: '  Copy with Links Summary',
     config: { respondWith: 'markdown', withLinksSummary: true },
   },
   {
     id: 'jina_links_and_images',
-    title: '✨  Copy Full (Links + Image Captions)',
+    title: ' [SUCCESS]   Copy Full (Links + Image Captions)',
     config: {
       respondWith:      'markdown',
       withLinksSummary: true,
@@ -89,7 +89,7 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
   // ── Shadow DOM ───────────────────────────────────────────────────────────
   {
     id: 'jina_shadow_dom',
-    title: '👁️  Copy (include Shadow DOM)',
+    title: '  Copy (include Shadow DOM)',
     config: { respondWith: 'markdown', withShadowDom: true },
   },
   { id: 'sep_4', separator: true },
@@ -97,12 +97,12 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
   // ── Screenshots ──────────────────────────────────────────────────────────
   {
     id: 'jina_screenshot',
-    title: '📸  Screenshot — Visible Area',
+    title: '  Screenshot — Visible Area',
     config: { respondWith: 'screenshot' },
   },
   {
     id: 'jina_pageshot',
-    title: '📷  Screenshot — Full Page',
+    title: '  Screenshot — Full Page',
     config: { respondWith: 'pageshot' },
   },
 ]);

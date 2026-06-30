@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Jina Reader — Local Edition (v7)
+#  Jina Reader — Local Edition (v7)
 **Professional-Grade • Local-First • Privacy-Centric**
 
 *Transform any webpage into high-fidelity, LLM-friendly Markdown entirely within the browser.*
@@ -14,12 +14,12 @@
 **Designed for AI Workflows. Engineered for Privacy.**
 </div>
 
-## 🌐 The Philosophy
+##  The Philosophy
 In an era of cloud-dependency and rate-limited APIs, **Jina Reader (Local)** represents a pivot back to local-first computing. This project eliminates the middleman, removing the need for `r.jina.ai` cloud calls by implementing the entire extraction and transformation pipeline directly in the browser's runtime. Content remains local, speed is absolute, and usage is infinite.
 
 ---
 
-## 🛠 Architectural Excellence
+##  Architectural Excellence
 
 The system is built on a modular, Service-Oriented Architecture (SOA) designed to handle the complexities of the modern web (Shadow DOM, dynamic iframes, and SPA layouts).
 
@@ -65,20 +65,20 @@ sequenceDiagram
 
 ---
 
-## 💎 Feature Matrix
+##  Feature Matrix
 
 | Feature | Local Engine (v7) | Cloud Reader |
 | :--- | :---: | :---: |
-| **Privacy** | 🔒 100% Local | ☁️ Cloud Processed |
-| **Rate Limits** | ♾️ Infinite | ⚠️ Strictly Limited |
-| **Cost** | 💸 $0 | 💰 Token Based |
+| **Privacy** |  100% Local |  Cloud Processed |
+| **Rate Limits** |  Infinite |  Strictly Limited |
+| **Cost** |  $0 |  Token Based |
 | **Shadow DOM** | ✅ Supported | ❌ Limited |
 | **Table Formatting** | ✅ Pro Grade | ✅ Basic |
 | **Full Pageshots** | ✅ Stitched Canvas | ❌ N/A |
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```text
 p:/extensions/JinaClip - Copy Page for LLM/
@@ -100,7 +100,7 @@ p:/extensions/JinaClip - Copy Page for LLM/
 
 ---
 
-## 🏗️ Technical Pipeline: Full Page Capture
+##  Technical Pipeline: Full Page Capture
 The "Pageshot" feature utilizes a multi-stage stitching pipeline to capture full-length articles without loss of detail.
 
 1. **Dimension Analysis:** Calculates `scrollHeight` and `viewHeight`.
@@ -110,7 +110,7 @@ The "Pageshot" feature utilizes a multi-stage stitching pipeline to capture full
 
 ---
 
-## 🚀 Installation & Development
+##  Installation & Development
 
 ### Onboarding for Contributors
 The codebase is written in vanilla ES6+ to ensure zero-coupling and maximum longevity.
@@ -130,7 +130,7 @@ The codebase is written in vanilla ES6+ to ensure zero-coupling and maximum long
 
 ---
 
-## 📋 Professional Usage
+##  Professional Usage
 
 - **Quick Action:** Left-click the extension icon for a standard Markdown copy.
 - **Precision Extraction:** Right-click the icon to select specific formats (JSON, HTML, Text).
@@ -138,7 +138,7 @@ The codebase is written in vanilla ES6+ to ensure zero-coupling and maximum long
 
 ---
 
-## ⚖️ Credits & License
+##  Credits & License
 This project was architected and developed by **Ahmad Hassan (B-Ted)** as a part of the movement toward high-performance, local-first AI tools.
 
 Distributed under the **MIT License**. Contributions that align with the core philosophy of "Clean Code & User Privacy" are welcomed.
