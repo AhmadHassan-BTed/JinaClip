@@ -69,7 +69,7 @@ const OptionsPage = {
     banner.textContent = text;
     banner.classList.remove('hidden');
     setTimeout(() => banner.classList.add('hidden'), 2500);
-  }
+  },
 };
 
 // Start the options page logic

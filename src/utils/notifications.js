@@ -6,8 +6,8 @@ import { STATUS_BADGE } from '../config/constants.js';
 export const NotificationUtil = {
   /**
    * Sets the badge status on the extension icon.
-   * @param {number} tabId 
-   * @param {'FETCHING'|'SUCCESS'|'ERROR'} type 
+   * @param {number} tabId
+   * @param {'FETCHING'|'SUCCESS'|'ERROR'} type
    */
   setBadge(tabId, type) {
     const config = STATUS_BADGE[type];
@@ -25,8 +25,8 @@ export const NotificationUtil = {
 
   /**
    * Shows a standard desktop notification.
-   * @param {string} title 
-   * @param {string} message 
+   * @param {string} title
+   * @param {string} message
    */
   showNotification(title, message) {
     chrome.notifications.create({
@@ -34,7 +34,7 @@ export const NotificationUtil = {
       iconUrl: '/icons/icon128.png',
       title,
       message,
-      priority: 2
+      priority: 2,
     });
-  }
+  },
 };

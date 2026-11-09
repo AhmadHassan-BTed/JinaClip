@@ -1,98 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Local Reader — Settings</title>
-  <link rel="stylesheet" href="options.css" />
-</head>
-<body>
-  <div class="page">
-    <header class="page-header">
-      <div class="logo-mark">L</div>
-      <div>
-        <h1>Local Engine Settings</h1>
-        <p class="sub">Configure Jina-parity features running entirely in your browser.</p>
-      </div>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Reader — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <div class="logo-mark">L</div>
+        <div>
+          <h1>Local Engine Settings</h1>
+          <p class="sub">Configure Jina-parity features running entirely in your browser.</p>
+        </div>
+      </header>
 
-    <div class="saved-banner hidden" id="savedBanner"> Settings saved</div>
+      <div class="saved-banner hidden" id="savedBanner">Settings saved</div>
 
-    <form id="settingsForm">
-      <!-- Selectors -->
-      <section class="card">
-        <h2>Targeting & Selectors</h2>
-        <div class="field">
-          <label for="targetSelector">Target Selector <span class="hint">(Only extract this)</span></label>
-          <input type="text" id="targetSelector" placeholder="e.g. #article-body" />
-        </div>
-        <div class="field">
-          <label for="removeSelector">Remove Selector <span class="hint">(Exclude these)</span></label>
-          <input type="text" id="removeSelector" placeholder="e.g. .ads, .sidebar" />
-        </div>
-      </section>
+      <form id="settingsForm">
+        <!-- Selectors -->
+        <section class="card">
+          <h2>Targeting & Selectors</h2>
+          <div class="field">
+            <label for="targetSelector"
+              >Target Selector <span class="hint">(Only extract this)</span></label
+            >
+            <input type="text" id="targetSelector" placeholder="e.g. #article-body" />
+          </div>
+          <div class="field">
+            <label for="removeSelector"
+              >Remove Selector <span class="hint">(Exclude these)</span></label
+            >
+            <input type="text" id="removeSelector" placeholder="e.g. .ads, .sidebar" />
+          </div>
+        </section>
 
-      <!-- Content -->
-      <section class="card">
-        <h2>Content Controls</h2>
-        <div class="field">
-          <label for="retainImages">Retain Images</label>
-          <select id="retainImages">
-            <option value="all">All (default)</option>
-            <option value="alt">Alt text only</option>
-            <option value="none">None</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="retainLinks">Retain Links</label>
-          <select id="retainLinks">
-            <option value="all">All (default)</option>
-            <option value="text">Anchor text only</option>
-            <option value="none">None</option>
-          </select>
-        </div>
-      </section>
+        <!-- Content -->
+        <section class="card">
+          <h2>Content Controls</h2>
+          <div class="field">
+            <label for="retainImages">Retain Images</label>
+            <select id="retainImages">
+              <option value="all">All (default)</option>
+              <option value="alt">Alt text only</option>
+              <option value="none">None</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="retainLinks">Retain Links</label>
+            <select id="retainLinks">
+              <option value="all">All (default)</option>
+              <option value="text">Anchor text only</option>
+              <option value="none">None</option>
+            </select>
+          </div>
+        </section>
 
-      <!-- Summaries -->
-      <section class="card">
-        <h2>Summaries & Footers</h2>
-        <div class="field row">
-          <label class="toggle-label">
-            <input type="checkbox" id="withLinksSummary" />
-            Append Links Summary
-          </label>
-        </div>
-        <div class="field row">
-          <label class="toggle-label">
-            <input type="checkbox" id="withImagesSummary" />
-            Append Images Summary
-          </label>
-        </div>
-      </section>
+        <!-- Summaries -->
+        <section class="card">
+          <h2>Summaries & Footers</h2>
+          <div class="field row">
+            <label class="toggle-label">
+              <input type="checkbox" id="withLinksSummary" />
+              Append Links Summary
+            </label>
+          </div>
+          <div class="field row">
+            <label class="toggle-label">
+              <input type="checkbox" id="withImagesSummary" />
+              Append Images Summary
+            </label>
+          </div>
+        </section>
 
-      <!-- Advanced DOM -->
-      <section class="card">
-        <h2>DOM Handling</h2>
-        <div class="field row">
-          <label class="toggle-label">
-            <input type="checkbox" id="withIframe" />
-            Include Iframes (Experimental)
-          </label>
-        </div>
-        <div class="field row">
-          <label class="toggle-label">
-            <input type="checkbox" id="withShadowDom" />
-            Include Shadow DOM (Experimental)
-          </label>
-        </div>
-      </section>
+        <!-- Advanced DOM -->
+        <section class="card">
+          <h2>DOM Handling</h2>
+          <div class="field row">
+            <label class="toggle-label">
+              <input type="checkbox" id="withIframe" />
+              Include Iframes (Experimental)
+            </label>
+          </div>
+          <div class="field row">
+            <label class="toggle-label">
+              <input type="checkbox" id="withShadowDom" />
+              Include Shadow DOM (Experimental)
+            </label>
+          </div>
+        </section>
 
-      <div class="actions">
-        <button type="submit" class="btn-save">Save settings</button>
-        <button type="button" class="btn-reset" id="resetBtn">Reset to defaults</button>
-      </div>
-    </form>
-  </div>
-  <script type="module" src="options.js"></script>
-</body>
+        <div class="actions">
+          <button type="submit" class="btn-save">Save settings</button>
+          <button type="button" class="btn-reset" id="resetBtn">Reset to defaults</button>
+        </div>
+      </form>
+    </div>
+    <script type="module" src="options.js"></script>
+  </body>
 </html>

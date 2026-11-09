@@ -22,5 +22,5 @@ export const Logger = {
   debug(message, ...args) {
     // You can toggle this based on an 'isDev' flag later
     console.log(`${this._prefix}  [DEBUG] ${message}`, ...args);
-  }
+  },
 };

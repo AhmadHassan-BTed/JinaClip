@@ -5,19 +5,19 @@
 export const defaultSettings = () => ({
   // Format
   respondWith: 'markdown', // 'markdown', 'html', 'text', 'screenshot', 'json'
-  
+
   // Images & Links
   retainImages: 'all', // 'all', 'none', 'alt'
-  retainLinks: 'all',  // 'all', 'none', 'text'
+  retainLinks: 'all', // 'all', 'none', 'text'
   withImagesSummary: false,
   withLinksSummary: false,
   withLinksSummaryAll: false,
-  
+
   // Selectors (Native Implementation)
   targetSelector: '',
   removeSelector: '',
   waitForSelector: '',
-  
+
   // Advanced DOM
   withIframe: false,
   withShadowDom: false,
@@ -29,6 +29,9 @@ export const defaultSettings = () => ({
 
 export const OPTION_FIELDS = Object.keys(defaultSettings());
 export const OPTION_CHECKBOXES = new Set([
-  'withImagesSummary', 'withLinksSummary', 'withLinksSummaryAll', 
-  'withIframe', 'withShadowDom'
+  'withImagesSummary',
+  'withLinksSummary',
+  'withLinksSummaryAll',
+  'withIframe',
+  'withShadowDom',
 ]);

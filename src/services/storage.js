@@ -15,7 +15,7 @@ export const StorageService = {
 
   /**
    * Updates settings in sync storage.
-   * @param {Object} settings 
+   * @param {Object} settings
    */
   async setSettings(settings) {
     await chrome.storage.sync.set({ settings });
@@ -26,5 +26,5 @@ export const StorageService = {
    */
   async resetSettings() {
     await chrome.storage.sync.set({ settings: defaultSettings() });
-  }
+  },
 };

@@ -6,13 +6,13 @@ import { Logger } from '../utils/logger.js';
 
 /** All supported respondWith modes — mirrors Jina Reader's API surface exactly. */
 export const RESPOND_WITH = Object.freeze({
-  MARKDOWN:   'markdown',   // Default: clean markdown
-  HTML:       'html',       // Raw cleaned HTML
-  TEXT:       'text',       // Plain text, no markup
+  MARKDOWN: 'markdown', // Default: clean markdown
+  HTML: 'html', // Raw cleaned HTML
+  TEXT: 'text', // Plain text, no markup
   SCREENSHOT: 'screenshot', // PNG of visible viewport
-  PAGESHOT:   'pageshot',   // Stitched full-page PNG
-  JSON:       'json',       // Full structured JSON payload
-  READER:     'reader',     // Alias for markdown (Jina compat)
+  PAGESHOT: 'pageshot', // Stitched full-page PNG
+  JSON: 'json', // Full structured JSON payload
+  READER: 'reader', // Alias for markdown (Jina compat)
 });
 
 /**
@@ -78,7 +78,7 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
     id: 'jina_links_and_images',
     title: ' [SUCCESS]   Copy Full (Links + Image Captions)',
     config: {
-      respondWith:      'markdown',
+      respondWith: 'markdown',
       withLinksSummary: true,
       withGeneratedAlt: true,
       withImagesSummary: true,
@@ -112,7 +112,6 @@ export const CONTEXT_MENU_ITEMS = Object.freeze([
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const LocalReaderService = {
-
   // ── Public API ────────────────────────────────────────────────────────────
 
   /**
@@ -134,13 +133,13 @@ export const LocalReaderService = {
    */
   async parsePage(tabId, config = {}) {
     const cfg = {
-      respondWith:       'markdown',
-      retainImages:      'all',
-      withGeneratedAlt:  false,
+      respondWith: 'markdown',
+      retainImages: 'all',
+      withGeneratedAlt: false,
       withImagesSummary: false,
-      withLinksSummary:  false,
-      withShadowDom:     false,
-      tokenBudget:       null,
+      withLinksSummary: false,
+      withShadowDom: false,
+      tokenBudget: null,
       ...config,
     };
 
@@ -160,8 +159,8 @@ export const LocalReaderService = {
       // ── Scripted extraction ──────────────────────────────────────────────
       const [{ result }] = await chrome.scripting.executeScript({
         target: { tabId },
-        func:   _engineCoreBody,
-        args:   [cfg],
+        func: _engineCoreBody,
+        args: [cfg],
       });
 
       if (!result) throw new Error('Local engine returned no result.');
@@ -180,11 +179,11 @@ export const LocalReaderService = {
       const metaLines = [
         `Title: ${result.title}`,
         `URL Source: ${result.url}`,
-        result.description   ? `Description: ${result.description}`       : null,
-        result.publishedTime ? `Published Time: ${result.publishedTime}`  : null,
-        result.author        ? `Author: ${result.author}`                 : null,
-        result.language      ? `Language: ${result.language}`             : null,
-        result.wordCount     ? `Word Count: ~${result.wordCount}`         : null,
+        result.description ? `Description: ${result.description}` : null,
+        result.publishedTime ? `Published Time: ${result.publishedTime}` : null,
+        result.author ? `Author: ${result.author}` : null,
+        result.language ? `Language: ${result.language}` : null,
+        result.wordCount ? `Word Count: ~${result.wordCount}` : null,
       ].filter(Boolean);
 
       let body = result.content;
@@ -193,7 +192,7 @@ export const LocalReaderService = {
       if (cfg.withImagesSummary && result.images?.length) {
         const section = result.images
           .map((img, i) => {
-            const label   = img.alt || `Image ${i + 1}`;
+            const label = img.alt || `Image ${i + 1}`;
             const caption = img.caption ? ` — ${img.caption}` : '';
             return `${i + 1}. ![${label}](${img.src})${caption}`;
           })
@@ -215,7 +214,6 @@ export const LocalReaderService = {
       }
 
       return `${metaLines.join('\n')}\n\nMarkdown Content:\n${body}`;
-
     } catch (err) {
       Logger.error('[LocalReader v7] parsePage error:', err);
       throw err;
@@ -240,8 +238,8 @@ export const LocalReaderService = {
           await navigator.clipboard.writeText(text);
         } catch {
           // Fallback for pages that block clipboard API
-          const ta       = document.createElement('textarea');
-          ta.value       = text;
+          const ta = document.createElement('textarea');
+          ta.value = text;
           ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
           document.body.appendChild(ta);
           ta.focus();
@@ -268,23 +266,23 @@ export const LocalReaderService = {
     chrome.contextMenus.removeAll(() => {
       // Top-level parent shown when right-clicking the extension icon
       chrome.contextMenus.create({
-        id:       'jina_root',
-        title:    'Jina Reader — Copy Page As…',
+        id: 'jina_root',
+        title: 'Jina Reader — Copy Page As…',
         contexts: ['action'],
       });
 
       for (const item of CONTEXT_MENU_ITEMS) {
         if (item.separator) {
           chrome.contextMenus.create({
-            id:       item.id,
-            type:     'separator',
+            id: item.id,
+            type: 'separator',
             parentId: 'jina_root',
             contexts: ['action'],
           });
         } else {
           chrome.contextMenus.create({
-            id:       item.id,
-            title:    item.title,
+            id: item.id,
+            title: item.title,
             parentId: 'jina_root',
             contexts: ['action'],
           });
@@ -303,14 +301,14 @@ export const LocalReaderService = {
    *   );
    */
   async handleContextMenuClick(info, tab) {
-    const item = CONTEXT_MENU_ITEMS.find(m => m.id === info.menuItemId);
+    const item = CONTEXT_MENU_ITEMS.find((m) => m.id === info.menuItemId);
     if (!item || item.separator) return;
 
     Logger.info(`[LocalReader v7] Menu click: ${item.id}`);
 
     try {
       const content = await this.copyToClipboard(tab.id, item.config);
-      const size    = this._humanSize(content.length);
+      const size = this._humanSize(content.length);
       await this._notify('Jina Reader', `✅ Copied! (${size})`);
     } catch (err) {
       Logger.error('[LocalReader v7] Menu click error:', err);
@@ -327,7 +325,7 @@ export const LocalReaderService = {
     Logger.info(`[LocalReader v7] Icon click — quick copy for tab ${tab.id}`);
     try {
       const content = await this.copyToClipboard(tab.id, { respondWith: 'markdown' });
-      const size    = this._humanSize(content.length);
+      const size = this._humanSize(content.length);
       await this._notify('Jina Reader', `✅ Page copied as Markdown (${size})`);
     } catch (err) {
       Logger.error('[LocalReader v7] Icon click error:', err);
@@ -349,23 +347,23 @@ export const LocalReaderService = {
       target: { tabId },
       func: () => ({
         scrollHeight: document.documentElement.scrollHeight,
-        scrollWidth:  document.documentElement.scrollWidth,
-        viewHeight:   window.innerHeight,
+        scrollWidth: document.documentElement.scrollWidth,
+        viewHeight: window.innerHeight,
         devicePixelRatio: window.devicePixelRatio || 1,
       }),
     });
 
     const { scrollHeight, viewHeight, devicePixelRatio: dpr } = dims;
     const viewports = Math.ceil(scrollHeight / viewHeight);
-    const shots     = [];
+    const shots = [];
 
     for (let i = 0; i < viewports; i++) {
       const scrollY = i * viewHeight;
 
       await chrome.scripting.executeScript({
         target: { tabId },
-        func:   (y) => window.scrollTo({ top: y, behavior: 'instant' }),
-        args:   [scrollY],
+        func: (y) => window.scrollTo({ top: y, behavior: 'instant' }),
+        args: [scrollY],
       });
 
       // Allow paint to settle
@@ -377,7 +375,7 @@ export const LocalReaderService = {
     // Restore scroll position
     await chrome.scripting.executeScript({
       target: { tabId },
-      func:   () => window.scrollTo({ top: 0, behavior: 'instant' }),
+      func: () => window.scrollTo({ top: 0, behavior: 'instant' }),
     });
 
     // Try OffscreenCanvas stitching (MV3 service worker)
@@ -394,7 +392,7 @@ export const LocalReaderService = {
   async _notify(title, message) {
     if (!chrome.notifications?.create) return;
     chrome.notifications.create(`jina_notif_${Date.now()}`, {
-      type:    'basic',
+      type: 'basic',
       iconUrl: chrome.runtime.getURL('icons/icon48.png'),
       title,
       message,
@@ -402,7 +400,7 @@ export const LocalReaderService = {
   },
 
   _humanSize(bytes) {
-    if (bytes < 1024)       return `${bytes} B`;
+    if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   },
@@ -413,7 +411,7 @@ export const LocalReaderService = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function _delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -422,15 +420,15 @@ function _delay(ms) {
  */
 async function _stitchScreenshots(dataUrls, dims, dpr) {
   const { scrollHeight, scrollWidth } = dims;
-  const canvas  = new OffscreenCanvas(scrollWidth * dpr, scrollHeight * dpr);
-  const ctx     = canvas.getContext('2d');
-  const viewH   = Math.round(canvas.height / dataUrls.length);
-  let   offsetY = 0;
+  const canvas = new OffscreenCanvas(scrollWidth * dpr, scrollHeight * dpr);
+  const ctx = canvas.getContext('2d');
+  const viewH = Math.round(canvas.height / dataUrls.length);
+  let offsetY = 0;
 
   for (const url of dataUrls) {
-    const resp    = await fetch(url);
-    const blob    = await resp.blob();
-    const bitmap  = await createImageBitmap(blob);
+    const resp = await fetch(url);
+    const blob = await resp.blob();
+    const bitmap = await createImageBitmap(blob);
     ctx.drawImage(bitmap, 0, offsetY);
     bitmap.close();
     offsetY += viewH;
@@ -439,7 +437,7 @@ async function _stitchScreenshots(dataUrls, dims, dpr) {
   const outBlob = await canvas.convertToBlob({ type: 'image/png' });
   return new Promise((res, rej) => {
     const reader = new FileReader();
-    reader.onload  = () => res(reader.result);
+    reader.onload = () => res(reader.result);
     reader.onerror = rej;
     reader.readAsDataURL(outBlob);
   });
@@ -461,29 +459,26 @@ async function _stitchScreenshots(dataUrls, dims, dpr) {
  */
 function _engineCoreBody(cfg) {
   try {
-
     // ── 0. Page-level metadata ──────────────────────────────────────────────
 
     const title = document.title?.trim() || 'Untitled Page';
-    const url   = window.location.href;
+    const url = window.location.href;
 
     const _meta = (sel) => document.querySelector(sel)?.content?.trim() || null;
-    const _og   = (prop) => _meta(`meta[property="${prop}"]`);
+    const _og = (prop) => _meta(`meta[property="${prop}"]`);
     const _name = (name) => _meta(`meta[name="${name}"]`);
 
-    const publishedTime = _og('article:published_time')
-      || _og('og:article:published_time')
-      || _name('date')
-      || null;
+    const publishedTime =
+      _og('article:published_time') || _og('og:article:published_time') || _name('date') || null;
 
     const description = _og('og:description') || _name('description') || null;
 
     const author =
-      _name('author')
-      || _og('article:author')
-      || document.querySelector('[rel="author"]')?.textContent?.trim()
-      || document.querySelector('.author, .byline, [itemprop="author"]')?.textContent?.trim()
-      || null;
+      _name('author') ||
+      _og('article:author') ||
+      document.querySelector('[rel="author"]')?.textContent?.trim() ||
+      document.querySelector('.author, .byline, [itemprop="author"]')?.textContent?.trim() ||
+      null;
 
     const language = document.documentElement.lang?.trim() || _name('language') || null;
 
@@ -497,14 +492,13 @@ function _engineCoreBody(cfg) {
       }
 
       // Score all block candidates
-      const candidates = document.querySelectorAll(
-        'div, section, article, main, td[class], table'
-      );
-      let best = document.body, maxScore = -Infinity;
+      const candidates = document.querySelectorAll('div, section, article, main, td[class], table');
+      let best = document.body,
+        maxScore = -Infinity;
 
       for (const el of candidates) {
-        const text   = (el.innerText || '').trim();
-        const links  = el.querySelectorAll('a').length;
+        const text = (el.innerText || '').trim();
+        const links = el.querySelectorAll('a').length;
         const inputs = el.querySelectorAll('input, button, select, textarea').length;
         if (text.length < 150) continue;
 
@@ -515,7 +509,10 @@ function _engineCoreBody(cfg) {
           inputs * 25 +
           (['article', 'main', 'section'].includes(el.tagName.toLowerCase()) ? text.length : 0);
 
-        if (score > maxScore) { maxScore = score; best = el; }
+        if (score > maxScore) {
+          maxScore = score;
+          best = el;
+        }
       }
       return best;
     }
@@ -528,13 +525,13 @@ function _engineCoreBody(cfg) {
      */
     function flattenShadowDom(node) {
       if (!cfg.withShadowDom) return;
-      
+
       const shadowHost = node.shadowRoot ? node : null;
       if (shadowHost) {
         const wrapper = document.createElement('div');
         wrapper.dataset.shadowHost = '1';
         wrapper.style.display = 'contents'; // Don't affect layout
-        
+
         // We cannot clone ShadowRoot itself, so we clone its children
         for (const child of shadowHost.shadowRoot.childNodes) {
           wrapper.appendChild(child.cloneNode(true));
@@ -551,7 +548,7 @@ function _engineCoreBody(cfg) {
     // ── 3. Clone & clean ────────────────────────────────────────────────────
 
     const rawRoot = cfg.targetSelector
-      ? (document.querySelector(cfg.targetSelector) || getBestRoot())
+      ? document.querySelector(cfg.targetSelector) || getBestRoot()
       : getBestRoot();
 
     // Clone first, THEN flatten the clone
@@ -560,28 +557,52 @@ function _engineCoreBody(cfg) {
 
     // Default junk selectors
     const JUNK = [
-      'script', 'style', 'noscript', 'svg > title',
-      'nav', 'footer', 'aside', 'header nav',
-      '.ads', '.advertisement', '.ad-container', '.advert',
-      '.cookie-banner', '.cookie-notice', '.gdpr',
-      '.popup', '.modal-overlay', '.toast',
-      '.menu', '.sidebar', '.breadcrumbs',
-      '.material-icons', '.material-symbols-outlined',
+      'script',
+      'style',
+      'noscript',
+      'svg > title',
+      'nav',
+      'footer',
+      'aside',
+      'header nav',
+      '.ads',
+      '.advertisement',
+      '.ad-container',
+      '.advert',
+      '.cookie-banner',
+      '.cookie-notice',
+      '.gdpr',
+      '.popup',
+      '.modal-overlay',
+      '.toast',
+      '.menu',
+      '.sidebar',
+      '.breadcrumbs',
+      '.material-icons',
+      '.material-symbols-outlined',
       '[aria-hidden="true"]',
-      '[role="banner"]', '[role="navigation"]', '[role="complementary"]',
+      '[role="banner"]',
+      '[role="navigation"]',
+      '[role="complementary"]',
     ];
 
     // User-supplied remove selectors
     const extraRemove = cfg.removeSelector
-      ? (Array.isArray(cfg.removeSelector) ? cfg.removeSelector : [cfg.removeSelector])
+      ? Array.isArray(cfg.removeSelector)
+        ? cfg.removeSelector
+        : [cfg.removeSelector]
       : [];
 
     for (const sel of [...JUNK, ...extraRemove]) {
-      try { clone.querySelectorAll(sel).forEach(el => el.remove()); } catch { /* bad selector */ }
+      try {
+        clone.querySelectorAll(sel).forEach((el) => el.remove());
+      } catch {
+        /* bad selector */
+      }
     }
 
     // Strip hidden elements
-    clone.querySelectorAll('*').forEach(el => {
+    clone.querySelectorAll('*').forEach((el) => {
       const s = el.style;
       if (s && (s.display === 'none' || s.visibility === 'hidden' || s.opacity === '0')) {
         el.remove();
@@ -591,37 +612,40 @@ function _engineCoreBody(cfg) {
     // ── 4. Collect structured data BEFORE conversion ─────────────────────────
 
     const allLinks = Array.from(clone.querySelectorAll('a[href]'))
-      .map(a => ({
+      .map((a) => ({
         href: a.href,
         text: (a.innerText || a.getAttribute('aria-label') || '').trim(),
       }))
-      .filter(l => l.href && !/^javascript:/i.test(l.href));
+      .filter((l) => l.href && !/^javascript:/i.test(l.href));
 
     const allImages = Array.from(clone.querySelectorAll('img'))
-      .map(img => {
-        const src     = img.src || img.dataset.src || img.dataset.lazySrc || '';
-        const alt     = img.alt?.trim() || '';
-        const title   = img.title?.trim() || '';
+      .map((img) => {
+        const src = img.src || img.dataset.src || img.dataset.lazySrc || '';
+        const alt = img.alt?.trim() || '';
+        const title = img.title?.trim() || '';
         const caption = img.closest('figure')?.querySelector('figcaption')?.innerText?.trim() || '';
         const context = (
           img.closest('[aria-label]')?.getAttribute('aria-label') ||
-          img.parentElement?.getAttribute('title') || ''
+          img.parentElement?.getAttribute('title') ||
+          ''
         ).trim();
 
         let generatedAlt = alt;
         if (!generatedAlt && cfg.withGeneratedAlt) {
           // Heuristic: decode filename, strip extension
-          const filename = src.split('/').pop().split('?')[0]
+          const filename = src
+            .split('/')
+            .pop()
+            .split('?')[0]
             .replace(/[-_+]/g, ' ')
             .replace(/\.[^.]{1,5}$/, '')
             .trim();
-          generatedAlt = caption || title || context
-            || (filename.length > 2 ? filename : `Image`);
+          generatedAlt = caption || title || context || (filename.length > 2 ? filename : `Image`);
         }
 
         return { src, alt: generatedAlt || alt, title, caption, context };
       })
-      .filter(img => img.src);
+      .filter((img) => img.src);
 
     // ── 5. Table → Markdown ──────────────────────────────────────────────────
 
@@ -630,28 +654,30 @@ function _engineCoreBody(cfg) {
       if (!rows.length) return '';
 
       const parseRow = (row) =>
-        Array.from(row.querySelectorAll('td, th'))
-          .map(cell => cell.innerText.trim().replace(/\|/g, '\\|').replace(/\n+/g, ' '));
+        Array.from(row.querySelectorAll('td, th')).map((cell) =>
+          cell.innerText.trim().replace(/\|/g, '\\|').replace(/\n+/g, ' '),
+        );
 
-      const head     = parseRow(rows[0]);
-      const divider  = head.map(() => '---');
+      const head = parseRow(rows[0]);
+      const divider = head.map(() => '---');
       const bodyRows = rows.slice(1).map(parseRow);
 
-      return '\n\n' + [head, divider, ...bodyRows]
-        .map(cols => `| ${cols.join(' | ')} |`)
-        .join('\n') + '\n\n';
+      return (
+        '\n\n' +
+        [head, divider, ...bodyRows].map((cols) => `| ${cols.join(' | ')} |`).join('\n') +
+        '\n\n'
+      );
     }
 
     // ── 6. Core Markdown Converter ───────────────────────────────────────────
 
     const retainImages = cfg.retainImages !== 'none';
-    let   imgIdx       = 0;
+    let imgIdx = 0;
 
     function nodeToMd(node, listType = null, listDepth = 0) {
       let md = '';
 
       for (const child of node.childNodes) {
-
         // ── Text node
         if (child.nodeType === 3) {
           md += child.textContent.replace(/\s+/g, ' ');
@@ -677,8 +703,8 @@ function _engineCoreBody(cfg) {
         if (tag === 'img') {
           if (!retainImages) continue;
           imgIdx++;
-          const imgData   = allImages[imgIdx - 1] || {};
-          const altText   = imgData.alt || `Image ${imgIdx}`;
+          const imgData = allImages[imgIdx - 1] || {};
+          const altText = imgData.alt || `Image ${imgIdx}`;
           const titleAttr = imgData.title ? ` "${imgData.title}"` : '';
           md += `![${altText}](${child.src || child.dataset.src || ''}${titleAttr})`;
           if (imgData.caption) md += `\n*${imgData.caption}*`;
@@ -695,14 +721,25 @@ function _engineCoreBody(cfg) {
         if (!inner) continue;
 
         switch (tag) {
-
           // Headings
-          case 'h1': md += `\n\n# ${inner}\n\n`;      break;
-          case 'h2': md += `\n\n## ${inner}\n\n`;     break;
-          case 'h3': md += `\n\n### ${inner}\n\n`;    break;
-          case 'h4': md += `\n\n#### ${inner}\n\n`;   break;
-          case 'h5': md += `\n\n##### ${inner}\n\n`;  break;
-          case 'h6': md += `\n\n###### ${inner}\n\n`; break;
+          case 'h1':
+            md += `\n\n# ${inner}\n\n`;
+            break;
+          case 'h2':
+            md += `\n\n## ${inner}\n\n`;
+            break;
+          case 'h3':
+            md += `\n\n### ${inner}\n\n`;
+            break;
+          case 'h4':
+            md += `\n\n#### ${inner}\n\n`;
+            break;
+          case 'h5':
+            md += `\n\n##### ${inner}\n\n`;
+            break;
+          case 'h6':
+            md += `\n\n###### ${inner}\n\n`;
+            break;
 
           // Block elements
           case 'p':
@@ -722,15 +759,19 @@ function _engineCoreBody(cfg) {
             break;
 
           case 'blockquote':
-            md += '\n\n' +
-              inner.split('\n').map(l => `> ${l}`).join('\n') +
+            md +=
+              '\n\n' +
+              inner
+                .split('\n')
+                .map((l) => `> ${l}`)
+                .join('\n') +
               '\n\n';
             break;
 
           case 'pre': {
             const langClass = child.querySelector('code')?.className || '';
-            const lang      = (langClass.match(/language-(\w+)/) || [])[1] || '';
-            const code      = child.querySelector('code')?.innerText ?? child.innerText;
+            const lang = (langClass.match(/language-(\w+)/) || [])[1] || '';
+            const code = child.querySelector('code')?.innerText ?? child.innerText;
             md += `\n\n\`\`\`${lang}\n${code.trim()}\n\`\`\`\n\n`;
             break;
           }
@@ -743,19 +784,37 @@ function _engineCoreBody(cfg) {
           }
 
           case 'strong':
-          case 'b':        md += `**${inner}**`;      break;
+          case 'b':
+            md += `**${inner}**`;
+            break;
           case 'em':
-          case 'i':        md += `*${inner}*`;         break;
+          case 'i':
+            md += `*${inner}*`;
+            break;
           case 'del':
           case 's':
-          case 'strike':   md += `~~${inner}~~`;       break;
+          case 'strike':
+            md += `~~${inner}~~`;
+            break;
           case 'ins':
-          case 'u':        md += `<u>${inner}</u>`;    break;
-          case 'mark':     md += `==${inner}==`;       break;
-          case 'sup':      md += `^${inner}^`;         break;
-          case 'sub':      md += `~${inner}~`;         break;
-          case 'kbd':      md += `<kbd>${inner}</kbd>`; break;
-          case 'code':     md += ` \`${inner}\` `;    break;
+          case 'u':
+            md += `<u>${inner}</u>`;
+            break;
+          case 'mark':
+            md += `==${inner}==`;
+            break;
+          case 'sup':
+            md += `^${inner}^`;
+            break;
+          case 'sub':
+            md += `~${inner}~`;
+            break;
+          case 'kbd':
+            md += `<kbd>${inner}</kbd>`;
+            break;
+          case 'code':
+            md += ` \`${inner}\` `;
+            break;
 
           case 'abbr': {
             const aTitle = child.getAttribute('title');
@@ -773,10 +832,12 @@ function _engineCoreBody(cfg) {
           case 'ul':
           case 'ol': {
             let listMd = '\n';
-            const items = Array.from(child.children).filter(c => c.tagName.toLowerCase() === 'li');
+            const items = Array.from(child.children).filter(
+              (c) => c.tagName.toLowerCase() === 'li',
+            );
             items.forEach((li, i) => {
-              const indent  = '  '.repeat(listDepth);
-              const bullet  = tag === 'ol' ? `${i + 1}.` : '-';
+              const indent = '  '.repeat(listDepth);
+              const bullet = tag === 'ol' ? `${i + 1}.` : '-';
               const liInner = nodeToMd(li, tag, listDepth + 1).trim();
               listMd += `${indent}${bullet} ${liInner}\n`;
             });
@@ -818,26 +879,26 @@ function _engineCoreBody(cfg) {
 
     // ── 7. Run, clean, and compute derivatives ────────────────────────────────
 
-    const rawMd   = nodeToMd(clone);
+    const rawMd = nodeToMd(clone);
     const content = rawMd
-      .replace(/\n{4,}/g, '\n\n\n')         // max 3 consecutive newlines
-      .replace(/^[ \t]+|[ \t]+$/gm, '')     // trim every line
+      .replace(/\n{4,}/g, '\n\n\n') // max 3 consecutive newlines
+      .replace(/^[ \t]+|[ \t]+$/gm, '') // trim every line
       .replace(/\n\n\n+/g, '\n\n\n')
       .trim();
 
     // Plain text: strip all markdown syntax
     const text = content
-      .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')    // images → alt text
-      .replace(/\[([^\]]+)\]\([^)]+\)/g,  '$1')    // links  → label
-      .replace(/`{1,3}[^`]*`{1,3}/g,      '')      // code
-      .replace(/#{1,6}\s+/g,              '')       // headings
-      .replace(/(\*\*|__)(.*?)\1/g,       '$2')     // bold
-      .replace(/(\*|_)(.*?)\1/g,          '$2')     // italic
-      .replace(/~~(.*?)~~/g,              '$1')     // strikethrough
-      .replace(/^[-*+]\s+/gm,            '')        // bullets
-      .replace(/^\d+\.\s+/gm,            '')        // ordered list
-      .replace(/^>\s+/gm,               '')         // blockquote
-      .replace(/\n{3,}/g,               '\n\n')
+      .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1') // images → alt text
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links  → label
+      .replace(/`{1,3}[^`]*`{1,3}/g, '') // code
+      .replace(/#{1,6}\s+/g, '') // headings
+      .replace(/(\*\*|__)(.*?)\1/g, '$2') // bold
+      .replace(/(\*|_)(.*?)\1/g, '$2') // italic
+      .replace(/~~(.*?)~~/g, '$1') // strikethrough
+      .replace(/^[-*+]\s+/gm, '') // bullets
+      .replace(/^\d+\.\s+/gm, '') // ordered list
+      .replace(/^>\s+/gm, '') // blockquote
+      .replace(/\n{3,}/g, '\n\n')
       .trim();
 
     const wordCount = text.split(/\s+/).filter(Boolean).length;
@@ -850,13 +911,12 @@ function _engineCoreBody(cfg) {
       author,
       language,
       wordCount,
-      content,          // clean markdown
-      text,             // plain text
+      content, // clean markdown
+      text, // plain text
       html: clone.innerHTML,
-      links:  allLinks,
+      links: allLinks,
       images: allImages,
     };
-
   } catch (e) {
     return { error: `Engine Error: ${e.message}\n${e.stack}` };
   }
