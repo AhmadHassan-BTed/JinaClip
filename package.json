@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/background/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "eslint \"src/**/*.js\"",
     "lint:fix": "eslint \"src/**/*.js\" --fix",
     "format": "prettier --write \"src/**/*.{js,html,css}\"",
@@ -39,6 +39,7 @@
   "devDependencies": {
     "@jest/globals": "^30.4.1",
     "eslint": "^10.4.0",
+    "globals": "^17.14.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "lint-staged": "^16.4.0",

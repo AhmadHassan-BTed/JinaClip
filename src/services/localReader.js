@@ -640,7 +640,7 @@ function _engineCoreBody(cfg) {
             .replace(/[-_+]/g, ' ')
             .replace(/\.[^.]{1,5}$/, '')
             .trim();
-          generatedAlt = caption || title || context || (filename.length > 2 ? filename : `Image`);
+          generatedAlt = caption || title || context || (filename.length > 2 ? filename : 'Image');
         }
 
         return { src, alt: generatedAlt || alt, title, caption, context };
